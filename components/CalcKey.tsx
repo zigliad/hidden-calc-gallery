@@ -68,7 +68,6 @@ export const CalcKey: React.FC<CalcKeyProps> = ({
 			onLongPress={onLongPress}
 			className={`
         ${getVariantStyles()}
-        ${wide ? "flex-[2]" : "flex-1"}
         aspect-square
         rounded-full
         items-center

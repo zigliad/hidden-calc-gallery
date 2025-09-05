@@ -7,14 +7,18 @@ import {
 	TextInput,
 	TouchableOpacity,
 	View,
+	ActivityIndicator,
 } from "react-native";
 
 import { CalcKey } from "../components/CalcKey";
 import { checkSecret, setPassword } from "../lib/secret";
+import { useAuth } from "../lib/auth-context";
+import LoginScreen from "../components/LoginScreen";
 
 type Operation = "+" | "-" | "*" | "/" | null;
 
 export default function Calculator() {
+	const { user, loading } = useAuth();
 	const [display, setDisplay] = useState("0");
 	const [previousValue, setPreviousValue] = useState<number | null>(null);
 	const [operation, setOperation] = useState<Operation>(null);
@@ -226,6 +230,28 @@ export default function Calculator() {
 			return "Error";
 		}
 	};
+
+	// Show loading spinner while checking authentication
+	if (loading) {
+		return (
+			<View
+				className="flex-1 bg-calcBg justify-center items-center"
+				style={{
+					flex: 1,
+					backgroundColor: "#000000",
+					justifyContent: "center",
+					alignItems: "center",
+				}}
+			>
+				<ActivityIndicator size="large" color="#FF9F0A" />
+			</View>
+		);
+	}
+
+	// Show login screen if not authenticated
+	if (!user) {
+		return <LoginScreen />;
+	}
 
 	return (
 		<View
